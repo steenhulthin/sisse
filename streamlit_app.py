@@ -74,7 +74,7 @@ if prompt := st.chat_input("Hvad sker der?"):
     selected_function = next(func for name, func in personas if name == chat_personality)
     prompt2 = prompt + selected_function()
     # Store and display the current prompt.
-    st.session_state.messages.append({"role": "user", "content": prompt2})
+    st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
 
@@ -82,7 +82,7 @@ if prompt := st.chat_input("Hvad sker der?"):
     stream = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
-            {"role": m["role"], "content": m["content"]}
+            {"role": m["role"], "content": prompt2}
             for m in st.session_state.messages
         ],
         stream=True,
