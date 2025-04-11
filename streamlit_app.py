@@ -3,6 +3,8 @@ from openai import OpenAI
 
 import streamlit as st
 
+import datalayer as dl
+
 st.title("🎉 Sisse's dashboard! 🎉")
 
 st.image("assest/sisse_drotner.jfif", caption="De bedste ønsker på din videre vej!")
@@ -23,6 +25,8 @@ for skill, rating in skills.items():
 
 # Personal Message
 st.write("Tak for dit årvågne øjne (og når det sejlede for meget, skarpe tunge)! Alt det bedste til dig fremover. 🚀")
+
+df = dl.get_confirmed_admitted_deceased_per_day_per_sex()
 
 
 st.subheader("Chat med os! (-ish)")
