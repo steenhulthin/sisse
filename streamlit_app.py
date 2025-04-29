@@ -4,6 +4,7 @@ from openai import OpenAI
 import streamlit as st
 
 import datalayer as dl
+import pandas as pd
 
 st.title("🎉 Sisse's dashboard! 🎉")
 
@@ -27,7 +28,28 @@ for skill, rating in skills.items():
 st.write("Tak for dit årvågne øjne (og når det sejlede for meget, skarpe tunge)! Alt det bedste til dig fremover. 🚀")
 
 df = dl.get_confirmed_admitted_deceased_per_day_per_sex()
+start_date = "2020-06-15"
+end_date = "2025-04-30"
 
+# Convert "Prøvetagningsdato" to a datetime format
+df["Prøvetagningsdato"] = pd.to_datetime(df["Prøvetagningsdato"])
+
+# Group by "Prøvetagningsdato" and sum "Bekræftede tilfælde i alt"
+df_grouped = df.groupby("Prøvetagningsdato")["Bekræftede tilfælde i alt"].sum().reset_index()
+
+# Define bins for categorizing dates
+bins = [pd.Timestamp("1900-01-01"), pd.Timestamp("2020-06-15"), pd.Timestamp("2025-04-30"), pd.Timestamp("2100-01-01")]
+labels = ["Before 2020-06-15", "Between 2020-06-15 and 2025-04-30", "After 2025-04-30"]
+
+# Create a new column with binned data
+df_grouped["Category"] = pd.cut(df_grouped["Prøvetagningsdato"], bins=bins, labels=labels)
+
+# Summarize by category
+df_binned = df_grouped.groupby("Category")["Bekræftede tilfælde i alt"].sum()
+
+print(df_binned)
+
+st.bar_chart(df_binned)
 
 st.subheader("Chat med os! (-ish)")
 st.write(
