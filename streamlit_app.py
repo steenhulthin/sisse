@@ -24,43 +24,38 @@ for skill, rating in skills.items():
 
     st.text(f"{skill}: {rating}/10")
 
-# Personal Message
 st.write("Tak for dit årvågne øjne (og når det sejlede for meget, skarpe tunge)! Alt det bedste til dig fremover. 🚀")
 
+st.write("Lidt om hvad du har været en vigtig del af, kan du se i grafen herunder (opdateres hver onsdag kl 15):")
 df = dl.get_confirmed_admitted_deceased_per_day_per_sex()
 start_date = "2020-06-15"
 end_date = "2025-04-30"
 
-# Convert "Prøvetagningsdato" to a datetime format
 df["Prøvetagningsdato"] = pd.to_datetime(df["Prøvetagningsdato"])
 
-# Group by "Prøvetagningsdato" and sum "Bekræftede tilfælde i alt"
 df_grouped = df.groupby("Prøvetagningsdato")["Bekræftede tilfælde i alt"].sum().reset_index()
 
-# Define bins for categorizing dates
-bins = [pd.Timestamp("1900-01-01"), pd.Timestamp("2020-06-15"), pd.Timestamp("2025-04-30"), pd.Timestamp("2100-01-01")]
-labels = ["Before 2020-06-15", "Between 2020-06-15 and 2025-04-30", "After 2025-04-30"]
+bins = [pd.Timestamp("1900-01-01"), pd.Timestamp(start_date), pd.Timestamp(end_date), pd.Timestamp("2100-01-01")]
+labels = ["DIAS før Sisse", "DIAS med Sisse", "DIAS efter Sisse"]
 
-# Create a new column with binned data
 df_grouped["Category"] = pd.cut(df_grouped["Prøvetagningsdato"], bins=bins, labels=labels)
 
-# Summarize by category
 df_binned = df_grouped.groupby("Category")["Bekræftede tilfælde i alt"].sum()
 
-print(df_binned)
-
-st.bar_chart(df_binned)
+st.bar_chart(df_binned, y_label="Covid-19 bekræftede tilfælde")
 
 st.subheader("Chat med os! (-ish)")
 st.write(
     "Når du kommer til at savne os, kan du her skrive og spørge os til råds i hverdagen i dit nye job. Til alle os andre er der også en Sisse-bot. 🤩 \nDu vælger bare hvem, du vil tale med og skriver løs!"
 )
 
+st.write("Enhver lighed med nulevende personer eller teams er tilfældig.")
+
 def MIAV():
     return "Svar på dansk. Svar som en flyvsk, ældre, kvindelig læge med speciale i mikrobiologi, som elsker de kliniske mikrobiologiske afdelinger (KMA'er). Brug gerne udtrykket: 'vi skal spille hinanden gode'. Det er også fint at nævne MIBA (Den danske mikrobiologidatabase) i dit svar, hvis det passer ind. "
 
 def B():
-    return "Svar på dansk. Svar som en tør økonomimedarbejder, der elsker sagsbehandling og forskerbetjening."
+    return "Svar på dansk. Svar som en tør økonomichef, der elsker sagsbehandling og forskerbetjening og ikke svarer om emner udover politik, organisation, økonomi, statskundskab, jura og forvaltning."
 
 def IAkob():
     return "Svar på dansk. Svar som en it mellemleder, som ikke ved noget om IT, der til gengæld prøver at skjule det ved ofte at bruge udtrykket: 'Det må vi lige se på'"
