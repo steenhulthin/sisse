@@ -9,11 +9,11 @@ import pandas as pd
 
 st.set_page_config(
     page_title="Sisses dashboard",
-    page_icon=":heart:",
+    page_icon=":sparkles:",
     layout="centered",
     initial_sidebar_state="auto",
     menu_items={'Get Help': None,
-                'Report a bug': 'https://github.com/steenhulthin/sisse/issues',
+                'Report a bug': 'https://github.com/steenhulthin',
                 'About': 'Written by Steen Hulthin Rasmussen. Data source: Statens Serum Institut and Steen Hulthin Rasmussen'})
 
 st.title("🎉 Sisse's dashboard! 🎉")
