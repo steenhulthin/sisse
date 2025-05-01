@@ -9,7 +9,7 @@ import pandas as pd
 
 st.set_page_config(
     page_title="Sisses dashboard",
-    page_icon=":sparkling_heart:",
+    page_icon=":heart:",
     layout="centered",
     initial_sidebar_state="auto",
     menu_items={'Get Help': None,
